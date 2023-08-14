@@ -65,4 +65,10 @@ public class PlayerMovement : MonoBehaviour
 
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
     }
+
+    private void Speedcontrol()
+    {
+    Vector3 flatvel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+    }
 }
+
