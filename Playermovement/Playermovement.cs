@@ -10,6 +10,14 @@ public class PlayerMovement : MonoBehaviour
 
     public float groundDrag;
 
+    public float jumpForce;
+    public float jumpCooldown;
+    public float airMultiplier;
+    bool readyToJump;
+
+    [Header("keybinds")]
+    public KeyCode jumpKey = KeyCode.Space;
+    
     [Header("Ground Check")]
     public float playerHeight; 
     public LayerMask whatIsGround;
@@ -73,6 +81,18 @@ public class PlayerMovement : MonoBehaviour
             Vector3 imitedVel = flatVel/normalized * moveSpeed
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+    }
+
+    private void jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void ResetJump()
+    {
+        readyToJump = true
     }
 }
 
