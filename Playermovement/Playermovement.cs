@@ -46,20 +46,17 @@ public class PlayerMovement : MonoBehaviour
     }
    
     private void FixedUpdate()
-   
     {
         MovePlayer();
     }
     
      private void Myinput()
-    
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
     }
 
      private void MovePlayer()
-   
     {
         moveDirection = orientation forward * verticalInput + orientation.right * horizontal input;
 
@@ -68,7 +65,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Speedcontrol()
     {
-    Vector3 flatvel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        Vector3 flatvel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        if(flatvel.magnitude > moveSpeed)
+        {
+            Vector3 imitedVel = flatVel/normalized * moveSpeed
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+        }
     }
 }
 
