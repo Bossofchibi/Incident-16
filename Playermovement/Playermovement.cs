@@ -34,6 +34,15 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody rb;
 
+    public MovementState state;
+
+    public enum MovementState
+    {
+        walking,
+        sprinting,
+        air
+    }
+
     private void start()
     
     {
@@ -49,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     
         MyInput();
         SpeedControl();
+        StateHandler();
 
         if(grounded)
         rb.drag = groundDrag;
@@ -73,6 +83,26 @@ public class PlayerMovement : MonoBehaviour
             Jump();
 
             Invoke(nameof(ResetJump), jumpCooldown);
+        }
+    }
+
+    private void StateHandler()
+    {
+        if(grounded && Input.GetKey(sprintKey))
+        {
+        state = MovementState.sprinting;
+        moveSpeed = sprintSpeed;
+        }
+
+        else if(grounded)
+        {
+            state = MovementState.walking;
+            moveSpeed = walkSpeed;
+        }
+
+        else 
+        {
+            state = MovementState.air;
         }
     }
 
