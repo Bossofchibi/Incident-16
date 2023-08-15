@@ -81,12 +81,15 @@ public class PlayerMovement : MonoBehaviour
     }
    
     private void FixedUpdate()
+    
     {
         MovePlayer();
     }
     
      private void Myinput()
+    
     {
+    
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
@@ -112,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void StateHandler()
+   
     {
         if (Input.GetKey(crouchkey))
         {
@@ -126,18 +130,21 @@ public class PlayerMovement : MonoBehaviour
         }
 
         else if(grounded)
+        
         {
             state = MovementState.walking;
             moveSpeed = walkSpeed;
         }
 
         else 
+       
         {
             state = MovementState.air;
         }
     }
 
      private void MovePlayer()
+    
     {
         moveDirection = orientation forward * verticalInput + orientation.right * horizontal input;
         
@@ -149,6 +156,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Speedcontrol()
+    
     {
         Vector3 flatvel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -160,6 +168,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void jump()
+    
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -167,8 +176,35 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void ResetJump()
+    
     {
         readyToJump = true
     }
+
+    private bool OnSlope()
+    
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAnlge && angle != 0;
+        }
+
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjecOnPlane(moveDirection, slopeHit.normal).Normalized;
+    }
+        
+
+
+
+
+
+
 }
+
 
