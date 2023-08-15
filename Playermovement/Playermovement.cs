@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Slope Handling")]
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
+    private bool exitingSlope; 
 
     public Transform orientation;
 
@@ -58,15 +59,13 @@ public class PlayerMovement : MonoBehaviour
     private void start()
 
     startYScale = transform.localScale.y;
-    
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
     
     private void update()
-   
-    {
+   {
 
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
     
@@ -81,13 +80,11 @@ public class PlayerMovement : MonoBehaviour
     }
    
     private void FixedUpdate()
-    
     {
         MovePlayer();
     }
     
      private void Myinput()
-    
     {
     
         horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -115,8 +112,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void StateHandler()
-   
-    {
+   {
         if (Input.GetKey(crouchkey))
         {
             state = MovementState.crouching;
@@ -130,59 +126,76 @@ public class PlayerMovement : MonoBehaviour
         }
 
         else if(grounded)
-        
         {
             state = MovementState.walking;
             moveSpeed = walkSpeed;
         }
 
         else 
-       
-        {
+       {
             state = MovementState.air;
         }
     }
 
      private void MovePlayer()
-    
     {
         moveDirection = orientation forward * verticalInput + orientation.right * horizontal input;
+
+        if(OnSlope() && !exitingSlope)
+        {
+            rb.AddForce(GetSlopeMoveDirection() * modeSpeed * 20f, ForceMode.Force);
+
+            if(rb.velocity.y > 0)
+                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+        }
         
         if(grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
 
             else if(!grounded)
                 rb.AddForce(moveDirection.normalized * moveSpeed * 10f  * airMultiplier, ForceMode.Force);
+
+            rb.useGravity = !OnSlope();
     }
 
     private void Speedcontrol()
-    
     {
-        Vector3 flatvel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        if(flatvel.magnitude > moveSpeed)
+        if (OnSlope() && !exitingSlope)
         {
+            if (rb.velocity.magnitude > moveSpeed)
+                rb.velocity = rb.velocity.normalized * moveSpeed;
+        }
+
+        else
+        {
+             Vector3 flatvel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+            if(flatvel.magnitude > moveSpeed)
+            {
             Vector3 imitedVel = flatVel/normalized * moveSpeed
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
         }
     }
 
     private void jump()
-    
     {
+        exitingSlope = true;
+        
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
     private void ResetJump()
-    
     {
-        readyToJump = true
+        readyToJump = true;
+
+        exitingSlope = false;
     }
 
     private bool OnSlope()
-    
     {
         if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
         
