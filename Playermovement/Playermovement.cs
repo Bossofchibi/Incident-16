@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
     {
         walking,
         sprinting,
+        crouching,
         air
     }
 
@@ -108,6 +109,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandler()
     {
+        if (Input.GetKey(crouchkey))
+        {
+            state = MovementState.crouching;
+            moveSpeed = crouchSpeed;
+        }
+        
         if(grounded && Input.GetKey(sprintKey))
         {
         state = MovementState.sprinting;
