@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     public float airMultiplier;
     bool readyToJump;
 
+    [Header("Crouching")]
+    public float crouchSpeed;
+    
+
     [Header("keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
     
