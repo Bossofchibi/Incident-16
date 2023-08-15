@@ -19,11 +19,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Crouching")]
     public float crouchSpeed;
-    
+    public float crouchYScale;
+    private float startYScale;
 
     [Header("keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
-    
+    public KeyCode sprintKey = KeyCode.LeftShift;
+    public KeyCode crouchKey = KeyCode.LeftControl;
+   
     [Header("Ground Check")]
     public float playerHeight; 
     public LayerMask whatIsGround;
@@ -48,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void start()
+
+    startYScale = transform.localScale.y;
     
     {
         rb = GetComponent<Rigidbody>();
@@ -88,6 +93,12 @@ public class PlayerMovement : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+
+        if(Input.GetKeyDown(crouchKey))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, crouchhYScale, transform.localScale.z);
+        }
+        
     }
 
     private void StateHandler()
