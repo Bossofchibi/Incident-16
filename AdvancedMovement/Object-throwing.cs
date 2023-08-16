@@ -42,6 +42,8 @@ public class Throwing : MonoBehavior
     GameObject projectile = Instantiate(objectToThrow, attackPoint.position, cam.rotation);
 
     Rididbody projectileRb = projectile.GetComponent<Rigidbody>();
+
+    Vector3 forceToAdd = cam.transform.forward * throwForce + transform.up * throwUpwardForce;
   }
   
 }
