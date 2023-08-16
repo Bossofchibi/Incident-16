@@ -212,12 +212,6 @@ public class PlayerMovement : MonoBehaviour
         return Vector3.ProjecOnPlane(moveDirection, slopeHit.normal).Normalized;
     }
         
-
-
-
-
-
-
 }
 
 
