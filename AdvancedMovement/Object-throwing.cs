@@ -25,6 +25,24 @@ public class Throwing : MonoBehavior
   {
     readyToThrow = true;
   }
+
+  private void Update
+  {
+    if(Input.GetKeyDown(throwKey) && readyToThrow && totalThrows > 0)
+    {
+      Throw();
+    }
+    
+  }
+
+  private void Throw()
+  {
+    readyToThrow = false;
+
+    GameObject projectile = Instantiate(objectToThrow, attackPoint.position, cam.rotation);
+
+    Rididbody projectileRb = projectile.GetComponent<Rigidbody>();
+  }
   
 }
 
