@@ -20,4 +20,11 @@ public class Throwing : MonoBehavior
   public float throwUpwardForce;
 
   bool readyToThrow;
+
+  private void Start()
+  {
+    readyToThrow = true;
+  }
+  
 }
+
