@@ -11,4 +11,4 @@ public class MoveCamera : MonoBehavior
 		transform.position = cameraPosition.position;
 	}
 }
-//To Ensure the ca
+
