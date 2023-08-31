@@ -47,4 +47,3 @@ public class Throwing : MonoBehavior
   }
   
 }
-//incomeplete please review
