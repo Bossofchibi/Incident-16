@@ -47,3 +47,4 @@ public class Throwing : MonoBehavior
   }
   
 }
+vector3
